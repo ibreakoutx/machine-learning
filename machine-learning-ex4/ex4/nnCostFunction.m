@@ -84,9 +84,24 @@ J = -sum( sum(ybin .* log(a3),2) + sum((1-ybin) .* log((1-a3)),2 ) )/m + ...
 % -------------------------------------------------------------
 
 % =========================================================================
+delta3 = a3 - ybin ;
+
+delta2 = Theta2'*delta3'; %Each training set output is in columns
+% Remove first row, corresponding to bias units
+delta2 = delta2(2:end,:) ;
+%z2 = [ ones( size(z2,1),1)*20  z2 ];
+delta2 = delta2 .* sigmoidGradient(z2');
+
+Theta1_grad = (delta2 * X)/m ;
+
+Theta2_grad = (delta3' * a2)/m ;
+
+%regularization, first column are the weights for the bias units
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + (lambda/m)*Theta1(:,2:end);
+
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + (lambda/m)*Theta2(:,2:end);
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
