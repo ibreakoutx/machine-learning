@@ -18,8 +18,9 @@ Z = zeros(size(X, 1), K);
 %                    projection_k = x' * U(:, k);
 %
 
-
-
+% X is m by n , U(:,K) is n by k
+% Each row of Z corresponds to an example projected onto U
+Z = X * U(:,1:K);
 
 % =============================================================
 
